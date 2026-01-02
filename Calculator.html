@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neomorphic Calculator</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, #0a0a0f, #12121a);
+      transition: background 0.5s;
+    }
+
+    .calculator {
+      background: #e0e0e0;
+      padding: 25px;
+      border-radius: 30px;
+      box-shadow: 9px 9px 16px #bebebe, -9px -9px 16px #ffffff;
+      width: 390px;
+      min-height: 550px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.4s ease;
+    }
+
+    .display {
+      background: #f0f0f0;
+      border-radius: 15px;
+      padding: 20px;
+      text-align: right;
+      font-size: 2rem;
+      color: #333;
+      box-shadow: inset 4px 4px 10px #c9c9c9, inset -4px -4px 10px #ffffff;
+      overflow: hidden;
+      word-wrap: break-word;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    button {
+      height: 60px;
+      border: none;
+      outline: none;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      background: #e0e0e0;
+      color: #333;
+      box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:active {
+      box-shadow: inset 3px 3px 6px #bebebe, inset -3px -3px 6px #ffffff;
+      transform: scale(0.97);
+    }
+
+    .operator, .equal, .theme-toggle {
+      color: #fff;
+      background: #2222fc;
+      box-shadow: 5px 5px 15px #8c8ce5, -5px -5px 15px #ffffff;
+    }
+
+    .equal {
+      grid-column: span 1;
+    }
+
+    .theme-toggle {
+      border-radius: 12px;
+      font-size: 0.9rem;
+      grid-column: span 2;
+    }
+
+    .dark-theme {
+      background: linear-gradient(145deg, #060608, #0e0e14);
+    }
+
+    .dark-theme .calculator {
+      background: #101018;
+      box-shadow: 9px 9px 20px #08080d, -9px -9px 20px #181825;
+    }
+
+    .dark-theme .display {
+      background: #0d0d15;
+      color: #00b7ff;
+      box-shadow: inset 4px 4px 8px #06060a, inset -4px -4px 8px #161625;
+    }
+
+    .dark-theme button {
+      background: #11111b;
+      color: #fff;
+      box-shadow: 5px 5px 10px #06060a, -5px -5px 10px #181825;
+    }
+
+    .dark-theme .operator, .dark-theme .equal, .dark-theme .theme-toggle {
+      background: #047ccc;
+      box-shadow: 3px 3px 15px #75b7dd, -5px -5px 15px #1d1c1c;
+      color: #fff;
+    }
+
+    @media (max-height: 700px) {
+      .calculator {
+        transform: scale(0.9);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <div class="display" id="display">0</div>
+
+    <div class="buttons">
+      <button onclick="clearDisplay()">C</button>
+      <button onclick="deleteChar()">DEL</button>
+      <button class="operator" onclick="append('%')">%</button>
+      <button class="operator" onclick="append('/')">/</button>
+
+      <button onclick="append('7')">7</button>
+      <button onclick="append('8')">8</button>
+      <button onclick="append('9')">9</button>
+      <button class="operator" onclick="append('*')">*</button>
+
+      <button onclick="append('4')">4</button>
+      <button onclick="append('5')">5</button>
+      <button onclick="append('6')">6</button>
+      <button class="operator" onclick="append('-')">-</button>
+
+      <button onclick="append('1')">1</button>
+      <button onclick="append('2')">2</button>
+      <button onclick="append('3')">3</button>
+      <button class="operator" onclick="append('+')">+</button>
+
+      <button onclick="append('(')">(</button>
+      <button onclick="append(')')">)</button>
+      <button onclick="append('.')">.</button>
+      <button class="equal operator" onclick="calculate()">=</button>
+
+      <button class="theme-toggle" onclick="toggleTheme()">Switch Theme</button>
+      <button onclick="append('0')">0</button>
+      <button onclick="append('<-')">←</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+    const body = document.body;
+
+    function append(value) {
+      if (display.textContent === '0' && value !== '.') {
+        display.textContent = value;
+      } else {
+        display.textContent += value;
+      }
+    }
+
+    function clearDisplay() {
+      display.textContent = '0';
+    }
+
+    function deleteChar() {
+      display.textContent = display.textContent.slice(0, -1) || '0';
+    }
+
+    function calculate() {
+      try {
+        display.textContent = eval(display.textContent.replace('<-', ''));
+      } catch {
+        display.textContent = 'Error';
+      }
+    }
+
+    function toggleTheme() {
+      body.classList.toggle('dark-theme');
+    }
+  </script>
+</body>
+</html>
